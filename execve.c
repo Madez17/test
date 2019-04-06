@@ -12,6 +12,6 @@ main() {
     	printf("Child: %u\n", my_pid);
 	printf("Parent: %u\n", my_ppid);
 
-	execve("hello", NULL, NULL);
+	execve("hello", *argv[], NULL);
 	printf("Error");
 }
