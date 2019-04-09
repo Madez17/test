@@ -14,9 +14,9 @@ int main(int argc, char *argv[])
 	char *buffer;
 	size_t sizebuf = 1;
 	ssize_t characters;
-	int iter = 0;
-	int cont = 0;
-	int iter2 = 1;
+	int iter;
+	int cont;
+	int iter2;
 	char **p;
 	pid_t my_pid;
 	pid_t my_ppid;
@@ -27,14 +27,15 @@ int main(int argc, char *argv[])
 	buffer = malloc(sizeof(char *) * 1024);
 	if (!buffer)
 		return (0);
-
 	while (1)
 	{
-
-		printf("$ ");
+		write(1, "#cisfun$ ", 9);
 
 		characters = getline(&buffer, &sizebuf, stdin);
-
+		iter = 0;
+		cont = 0;
+		if (characters == -1)
+			break;
 		while (buffer[iter] != '\0')
 		{
 			if (buffer[iter] == ' ' || buffer[iter] == '\n')
@@ -43,25 +44,29 @@ int main(int argc, char *argv[])
 			}
 			iter++;
 		}
-		cont + 1;
-
+		cont++;
+		/*printf("Iteraciones: %d\n", iter);
+		printf("N de palabras: %d\n", cont);*/
 		p = malloc(sizeof(char *) *cont);
 		p[0] = strtok(buffer, " \n");
-
+		/*printf("%s ", p[0]);*/
+		iter2 = 1;
 		while (iter2 < cont)
 		{
 			p[iter2] = strtok(NULL, " \n");
+			/*printf("%s ", p[iter2]);*/
 			iter2++;
 		}
 
 		if (fork() == 0)
 		{
 			if (execve(p[0], p, NULL) == -1)
-			{
-				printf("./shell: No such file or directory\n");
+			{		
+				perror("./shell");
 			}
 			
 		}
+
 		wait(NULL);
 	}
 	return(0);
