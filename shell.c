@@ -2,6 +2,7 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <string.h>
+
 /**
  *
  *
@@ -27,28 +28,41 @@ int main(int argc, char *argv[])
 	if (!buffer)
 		return (0);
 
-	printf("$");
-
-	characters = getline(&buffer, &sizebuf, stdin);
-
-	while (buffer[iter] != '\0')
+	while (1)
 	{
-		if (buffer[iter] == ' ' || buffer[iter] == '\n')
+
+		printf("$ ");
+
+		characters = getline(&buffer, &sizebuf, stdin);
+
+		while (buffer[iter] != '\0')
 		{
-			cont++;
+			if (buffer[iter] == ' ' || buffer[iter] == '\n')
+			{
+				cont++;
+			}
+			iter++;
 		}
-		iter++;
-	}
-	cont + 1;
+		cont + 1;
 
-	p = malloc(sizeof(char *) *cont);
-	p[0] = strtok(buffer, " \n");
+		p = malloc(sizeof(char *) *cont);
+		p[0] = strtok(buffer, " \n");
 
-	while (iter2 < cont)
-	{
-		p[iter2] = strtok(NULL, " \n");
-		iter2++;
+		while (iter2 < cont)
+		{
+			p[iter2] = strtok(NULL, " \n");
+			iter2++;
+		}
+
+		if (fork() == 0)
+		{
+			if (execve(p[0], p, NULL) == -1)
+			{
+				printf("./shell: No such file or directory\n");
+			}
+			
+		}
+		wait(NULL);
 	}
-	execve(p[0], p, NULL);
-	return (0);
+	return(0);
 }
