@@ -12,7 +12,7 @@
 int main(int argc, char *argv[])
 {
 	char *buffer;
-	size_t sizebuf = 1;
+	size_t sizebuf = 0;
 	ssize_t characters;
 	int iter;
 	int cont;
@@ -34,8 +34,11 @@ int main(int argc, char *argv[])
 		characters = getline(&buffer, &sizebuf, stdin);
 		iter = 0;
 		cont = 0;
-		if (characters == -1)
-			break;
+		if (characters == EOF)
+		{
+			perror("./shell");
+			exit(-1);
+		}
 		while (buffer[iter] != '\0')
 		{
 			if (buffer[iter] == ' ' || buffer[iter] == '\n')
@@ -63,6 +66,7 @@ int main(int argc, char *argv[])
 			if (execve(p[0], p, NULL) == -1)
 			{		
 				perror("./shell");
+				exit(-1);
 			}
 			
 		}
