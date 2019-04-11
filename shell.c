@@ -12,19 +12,19 @@
 *
 * Return: Always 0.
 */
-int _strcmp(char *s1, char *s2)
+int _strcmp(char *s1, char *s2, int n)
 {
 	int result;
 	int cont;
 
-	for (cont = 0; s1[cont] != '\0' && cont < 5; cont++)
+	for (cont = 0; s1[cont] != '\0' && cont < n; cont++)
 	{
 		result = s1[cont] - s2[cont];
 
-		printf("%d\n", result);
+		//printf("%d\n", result);
 		if (result != 0)
 		{
-			printf("Estamos aqui");
+			//printf("Estamos aqui");
 			return(1);
 		}
 	}
@@ -43,8 +43,7 @@ int _strlen(char *s)
 {
 	int length;
 
-	for (length = 0; *s != '\0'; s++)
-		length++;
+	for (length = 0; s[length] != '\0'; length++){}
 	return (length);
 }
 
@@ -128,6 +127,7 @@ int main(int argc, char *argv[])
 	ssize_t characters;
 	int iter, cont, iter2, iterenv, lenght;
 	char **p;
+	int own_comm;
 	pid_t my_pid;
 	pid_t my_ppid;
 	
@@ -139,6 +139,8 @@ int main(int argc, char *argv[])
 		return (0);
 	while (1)
 	{
+		own_comm = 1;
+		result = "";
 		write(1, "#cisfun$ ", 9);
 
 		characters = getline(&buffer, &sizebuf, stdin);
@@ -167,75 +169,106 @@ int main(int argc, char *argv[])
 
 		p[0] = strtok(buffer, " \n");
 
-		if (_strcmp(p[0], "exit") == 0)
+		/*Propios functions----------------------------------------------*/
+		if((_strlen(p[0]) - 4) >= 0)
 		{
-			exit(-1);
+			if (_strcmp(p[0], "exit", 4) == 0)
+			{
+				exit(-1);
+			}
 		}
+
+		if((_strlen(p[0]) - 3) >= 0)
+		{
+			if (_strcmp(p[0], "env", 3) == 0)
+			{
+				for (iterenv = 0; environ[iterenv] != NULL; iterenv++)
+				{	
+					lenght = _strlen(environ[iterenv]);
+					/*printf("%s", environ[iterenv]);
+					printf("%d", lenght);*/
+					write(1, environ[iterenv], lenght);
+					write(1, "\n", 1);
+				}
+				own_comm = 0;
+			}
+		}
+
+		/*----------------------------------------------------------------*/
+
 
 		/*printf("%s ", p[0]);*/
-		iter2 = 1;
-		while (iter2 < cont)
-		{
-			p[iter2] = strtok(NULL, " \n");
-			/*printf("%s ", p[iter2]);*/
-			iter2++;
-		}
 
-		concat = p[0];
-
-		if (access(p[0], F_OK) != 0)
+		if(own_comm == 1)
 		{
-			
-			for (iterenv = 0; environ[iterenv] != NULL; iterenv++)
+			printf("ls esta aqui\n");
+			iter2 = 1;
+			while (iter2 < cont)
 			{
-				if (_strcmp(environ[iterenv], "PATH=") == 0)
-				{
-					/*printf("%s ", environ[iterenv]);*/
-					break;
-				}
+				p[iter2] = strtok(NULL, " \n");
+				/*printf("%s ", p[iter2]);*/
+				iter2++;
 			}
 
-			lenght = _strlen(environ[iterenv]);
-			/*printf("%d\n", lenght);*/
+			concat = p[0];
+			printf("Comando: %s\n", concat);
 
-			cpyenv = malloc(sizeof(char) * lenght + 1);
-			
-			if (!cpyenv)
-				return (0);
-
-			cpypath = _strncpy(cpyenv, environ[iterenv], lenght);
-			/*printf("%s ", cpypath);*/
-		
-			strtok (cpypath, "=:\n");
-
-			while (result != NULL)
+			if (access(p[0], F_OK) != 0)
 			{
-				result = strtok(NULL, "=:\n");
-				/*printf("%s\n", result);*/
+				printf("el comando no es una direccion\n");
 			
-				concat = str_concat(result, "/");
-				/*printf("%s\n", concat);*/
-				concat = str_concat(concat, p[0]);
-				/*printf("%s\n", concat);*/
-
-				if (access(concat, F_OK) == 0)
+				for (iterenv = 0; environ[iterenv] != NULL; iterenv++)
 				{
-					/*printf("estamos aqui/n");*/
-					break;
+					if (_strcmp(environ[iterenv], "PATH=", 5) == 0)
+					{
+						/*printf("%s ", environ[iterenv]);*/
+						break;
+					}
 				}
+
+				lenght = _strlen(environ[iterenv]);
+				/*printf("%d\n", lenght);*/
+
+				cpyenv = malloc(sizeof(char) * lenght + 1);
+				
+				if (!cpyenv)
+					return (0);
+
+				cpypath = _strncpy(cpyenv, environ[iterenv], lenght);
+				/*printf("%s ", cpypath);*/
+			
+				strtok (cpypath, "=:\n");
+
+				while (result != NULL)
+				{
+					result = strtok(NULL, "=:\n");
+					printf("Directorio = %s\n", result);
+				
+					concat = str_concat(result, "/");
+					printf("Directorio + / = %s\n", concat);
+					concat = str_concat(concat, p[0]);
+					printf("Comando concatenado = %s\n", concat);
+
+					if (access(concat, F_OK) == 0)
+					{
+						/*printf("estamos aqui/n");*/
+						break;
+					}
+				}
+
+			}
+			printf("Comando final: %s\n", concat);
+			if (fork() == 0)
+			{
+				if (execve(concat, p, NULL) == -1)
+				{		
+					perror("./shell");
+					exit(-1);
+				}	
 			}
 
+			wait(NULL);
 		}
-		if (fork() == 0)
-		{
-			if (execve(concat, p, NULL) == -1)
-			{		
-				perror("./shell");
-				exit(-1);
-			}	
-		}
-
-		wait(NULL);
 	}
 	return(0);
 }
