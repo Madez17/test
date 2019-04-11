@@ -173,43 +173,41 @@ int main(int argc, char *argv[])
 		if (access(p[0], F_OK) != 0)
 		{
 			
-		for (iterenv = 0; environ[iterenv] != NULL; iterenv++)
-		{
-			if (_strcmp(environ[iterenv], "PATH=") == 0)
+			for (iterenv = 0; environ[iterenv] != NULL; iterenv++)
 			{
-				/*printf("%s ", environ[iterenv]);*/
-				break;
+				if (_strcmp(environ[iterenv], "PATH=") == 0)
+				{
+					/*printf("%s ", environ[iterenv]);*/
+					break;
+				}
 			}
-		}
 
-		lenght = _strlen(environ[iterenv]);
-		printf("%d\n", lenght);
+			lenght = _strlen(environ[iterenv]);
+			/*printf("%d\n", lenght);*/
 
-		cpyenv = malloc(sizeof(char) * lenght + 1);
+			cpyenv = malloc(sizeof(char) * lenght + 1);
 
-
-		cpypath = _strncpy(cpyenv, environ[iterenv], lenght);
-		printf("%s ", cpypath);
+			cpypath = _strncpy(cpyenv, environ[iterenv], lenght);
+			/*printf("%s ", cpypath);*/
 		
+			strtok (cpypath, "=:\n");
 
-		strtok (cpypath, "=:\n");
-
-		while (result != NULL)
-		{
-			result = strtok(NULL, "=:\n");
-			printf("%s\n", result);
-			
-			concat = str_concat(result, "/");
-			printf("%s\n", concat);
-			concat = str_concat(concat, p[0]);
-			printf("%s\n", concat);
-
-			if (access(concat, F_OK) == 0)
+			while (result != NULL)
 			{
-				printf("estamos aqui/n");
-				break;
+				result = strtok(NULL, "=:\n");
+				/*printf("%s\n", result);*/
+			
+				concat = str_concat(result, "/");
+				/*printf("%s\n", concat);*/
+				concat = str_concat(concat, p[0]);
+				/*printf("%s\n", concat);*/
+
+				if (access(concat, F_OK) == 0)
+				{
+					/*printf("estamos aqui/n");*/
+					break;
+				}
 			}
-		}
 
 		}
 		if (fork() == 0)
@@ -218,8 +216,7 @@ int main(int argc, char *argv[])
 			{		
 				perror("./shell");
 				exit(-1);
-			}
-			
+			}	
 		}
 
 		wait(NULL);
