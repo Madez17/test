@@ -20,8 +20,11 @@ int _strcmp(char *s1, char *s2)
 	for (cont = 0; s1[cont] != '\0' && cont < 5; cont++)
 	{
 		result = s1[cont] - s2[cont];
+
+		printf("%d\n", result);
 		if (result != 0)
 		{
+			printf("Estamos aqui");
 			return(1);
 		}
 	}
@@ -158,7 +161,17 @@ int main(int argc, char *argv[])
 		/*printf("Iteraciones: %d\n", iter);
 		printf("N de palabras: %d\n", cont);*/
 		p = malloc(sizeof(char *) *cont);
+
+		if(!p)
+			return (0);
+
 		p[0] = strtok(buffer, " \n");
+
+		if (_strcmp(p[0], "exit") == 0)
+		{
+			exit(-1);
+		}
+
 		/*printf("%s ", p[0]);*/
 		iter2 = 1;
 		while (iter2 < cont)
@@ -186,6 +199,9 @@ int main(int argc, char *argv[])
 			/*printf("%d\n", lenght);*/
 
 			cpyenv = malloc(sizeof(char) * lenght + 1);
+			
+			if (!cpyenv)
+				return (0);
 
 			cpypath = _strncpy(cpyenv, environ[iterenv], lenght);
 			/*printf("%s ", cpypath);*/
