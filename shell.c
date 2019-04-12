@@ -201,7 +201,7 @@ int main(int argc, char *argv[])
 
 		if(own_comm == 1)
 		{
-			printf("ls esta aqui\n");
+			/*printf("ls esta aqui\n");*/
 			iter2 = 1;
 			while (iter2 < cont)
 			{
@@ -211,11 +211,11 @@ int main(int argc, char *argv[])
 			}
 
 			concat = p[0];
-			printf("Comando: %s\n", concat);
+			/*printf("Comando: %s\n", concat);*/
 
 			if (access(p[0], F_OK) != 0)
 			{
-				printf("el comando no es una direccion\n");
+				/*printf("el comando no es una direccion\n");*/
 			
 				for (iterenv = 0; environ[iterenv] != NULL; iterenv++)
 				{
@@ -242,12 +242,12 @@ int main(int argc, char *argv[])
 				while (result != NULL)
 				{
 					result = strtok(NULL, "=:\n");
-					printf("Directorio = %s\n", result);
+					/*printf("Directorio = %s\n", result);*/
 				
 					concat = str_concat(result, "/");
-					printf("Directorio + / = %s\n", concat);
+					/*printf("Directorio + / = %s\n", concat);*/
 					concat = str_concat(concat, p[0]);
-					printf("Comando concatenado = %s\n", concat);
+					/*printf("Comando concatenado = %s\n", concat);*/
 
 					if (access(concat, F_OK) == 0)
 					{
@@ -257,7 +257,7 @@ int main(int argc, char *argv[])
 				}
 
 			}
-			printf("Comando final: %s\n", concat);
+			/*printf("Comando final: %s\n", concat);*/
 			if (fork() == 0)
 			{
 				if (execve(concat, p, NULL) == -1)
