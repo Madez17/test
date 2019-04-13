@@ -10,8 +10,8 @@ int main(int argc, char *argv[])
 {
 	extern char **environ;
 	char *buffer, *cpyenv, *cpypath, *result, *concat, *concat_slash, **p;
-	size_t sizebuf = 0;
-	ssize_t characters;
+	//size_t sizebuf = 0;
+	//ssize_t characters;
 	int iter, cont, iter2, iterenv, lenght, own_comm, alone_comm, basura;
 
 	pid_t my_pid;
@@ -24,13 +24,14 @@ int main(int argc, char *argv[])
 	/*buffer = malloc(sizeof(char *) * 1024);
 	if (!buffer)
 		return (0);*/
+
 	while (1)
 	{
 		/*SETEO VARIABLES -------------------*/
 		own_comm = 1;
 		result = "";
-		/*BUFFER -----------------------------*/
-		write(1, "#cisfun$ ", 9);
+		/*BUFFER -----------------------------_getline()*/
+		/*write(1, "#cisfun$ ", 9);
 		
 		characters = getline(&buffer, &sizebuf, stdin);
 		if (characters == EOF)
@@ -38,12 +39,13 @@ int main(int argc, char *argv[])
 			perror("./shell");
 			free(buffer);
 			exit(-1);
-		}
+		}*/
+		buffer = _prompt(buffer);
 
 		iter = 0;
 		cont = 0;
 
-		/*BUFFER ITERATE ------------------------*/
+		/*BUFFER ITERATE ------------------------ _store_args*/
 		while (buffer[iter] != '\0')
 		{
 			if (buffer[iter] == ' ' || buffer[iter] == '\n')
@@ -62,13 +64,14 @@ int main(int argc, char *argv[])
 			return (0);
 		}
 		
-		/*SEPARATOR ---------------------------*/
+		/*SEPARATOR ---------------------------Asignacion Primer argumento*/
 		p[0] = strtok(buffer, " \n");
 		if (p[0] != NULL)
 		{	
 			/*printf("%p\n", p[0]);*/
 
 			/* 1-OWNER FUNCTIONS ------------------------------------*/
+			/*exit*/
 			if((_strlen(p[0]) - 4) >= 0)
 			{
 				if (_strcmp(p[0], "exit", 4) == 0)
@@ -78,7 +81,7 @@ int main(int argc, char *argv[])
 					exit(-1);
 				}
 			}
-
+			/*env*/
 			if((_strlen(p[0]) - 3) >= 0)
 			{
 				if (_strcmp(p[0], "env", 3) == 0)
@@ -105,7 +108,7 @@ int main(int argc, char *argv[])
 				alone_comm = 1;
 				/*printf("ls esta aqui\n");*/
 
-				/*OBTENER PARAMETERS -------------------------------------*/
+				/*ASSIGN PARAMETERS -------------------------------------*/
 				iter2 = 1;
 				while (iter2 < cont)
 				{
@@ -146,7 +149,7 @@ int main(int argc, char *argv[])
 					}
 					cpypath = _strncpy(cpyenv, environ[iterenv], lenght);
 					/*printf("%s ", cpypath);*/
-					/*CUT PATH -----------------------------------------*/	
+					/*CUT PATH -----------------------------------------EXECUTE_OK*/	
 					strtok (cpypath, "=:\n");
 
 					while (result != NULL)
