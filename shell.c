@@ -190,17 +190,17 @@ int main(int argc, char *argv[])
 				}
 				else
 				{
-					free(p);
+					/*free(p);*/
 					/*free(buffer);*/
 					if(alone_comm == 0)
 					{
 						free(cpyenv);
 						free(concat);
 					}
-					/*if(alone_comm == 0 && basura == 1)
+					if(alone_comm == 0 && basura != 0)
 					{
-						free(cpyenv);
-					}*/
+						free(p);
+					}
 
 
 				}
