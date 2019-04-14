@@ -6,13 +6,13 @@
  *
  */
 
-extern char **environ;
 int main(int argc, char *argv[])
 {
+	//extern char **environ;
 	char *buffer, *cpyenv, *cpypath, *result, *concat, *concat_slash, **p;
 	//size_t sizebuf = 0;
 	//ssize_t characters;
-	int iter, cont, iter2, lenght,iterenv, own_comm, alone_comm, basura;
+	int iter, cont, iter2, iterenv, lenght, own_comm, alone_comm, basura;
 
 	pid_t my_pid;
 	pid_t my_ppid;
@@ -142,7 +142,7 @@ int main(int argc, char *argv[])
 					
 					/*FOUND PATH -------------------------------------------*/
 					
-					cpypath = _found_path(buffer, p);
+					cpypath = _found_path(cpypath, environ);
 
 					/*for (iterenv = 0; environ[iterenv] != NULL; iterenv++)
 					{
@@ -162,8 +162,8 @@ int main(int argc, char *argv[])
 						free(buffer);
 						free(p);
 						return (0);
-					}
-					cpypath = _strncpy(cpyenv, environ[iterenv], lenght);*/
+					}*/
+					cpypath = _strncpy(cpyenv, environ[iterenv], lenght);
 					/*printf("%s ", cpypath);*/
 					/*CUT PATH -----------------------------------------EXECUTE_OK*/	
 					strtok (cpypath, "=:\n");

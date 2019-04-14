@@ -1,9 +1,11 @@
 #include "simple_shell.h"
 
 /**
- * _prompt -
+ * _prompt - get parameters in the promt
  *
+ * @buffer: space in memory
  *
+ * return: buffer
  */
 
 char *_prompt(char *buffer)
@@ -12,7 +14,6 @@ char *_prompt(char *buffer)
 	size_t sizebuf = 120;
 
 	write(1, "#cisfun$ ", 9);
-		
 	characters = getline(&buffer, &sizebuf, stdin);
 	if (characters == EOF)
 	{
