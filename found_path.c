@@ -1,12 +1,14 @@
 #include "simple_shell.h"
 
 /**
+ * _found_path - Function
  *
+ * @buffer: Buffer
+ * @p: Doble pointer
  *
- *
+ * Return: Copy path
  */
 
-extern char **environ;
 
 char *_found_path(char *buffer, char **p)
 {
@@ -24,7 +26,7 @@ char *_found_path(char *buffer, char **p)
 
 	lenght = _strlen(environ[iterenv]);
 	/*printf("%d\n", lenght);*/
-	
+
 	cpyenv = malloc(sizeof(char) * lenght + 1);
 	if (cpyenv == NULL)
 	{
@@ -32,7 +34,7 @@ char *_found_path(char *buffer, char **p)
 		free(p);
 		exit(-1);
 	}
-	cpypath = _strncpy(cpyenv, environ[iterenv], lenght);	
+	cpypath = _strncpy(cpyenv, environ[iterenv], lenght);
 	return (cpypath);
 }
 

@@ -5,7 +5,7 @@
  *
  * @buffer: space in memory
  *
- * return: buffer
+ * Return: buffer
  */
 
 char *_prompt(char *buffer)

@@ -19,16 +19,17 @@ int main(int argc, char *argv[])
 	
     	my_pid = getpid();
 	my_ppid = getppid();
-
 	buffer = NULL;
 	/*buffer = malloc(sizeof(char *) * 1024);
 	if (!buffer)
 		return (0);*/
-
+	
+	signal(SIGINT, handle_sigint);
+	
 	while (1)
 	{
 		/*SETEO VARIABLES -------------------*/
-		own_comm = 1;
+		own_comm = 0;
 		result = "";
 		/*BUFFER -----------------------------_getline()*/
 		/*write(1, "#cisfun$ ", 9);
@@ -94,28 +95,31 @@ int main(int argc, char *argv[])
 			}*/
 			/*env*/
 		
-			if((_strlen(p[0]) - 3) >= 0)
+			/*if((_strlen(p[0]) - 3) >= 0)
 			{
 				if (_strcmp(p[0], "env", 3) == 0)
 				{
 					for (iterenv = 0; environ[iterenv] != NULL; iterenv++)
 					{	
-						lenght = _strlen(environ[iterenv]);
+						lenght = _strlen(environ[iterenv]);*/
 						/*printf("%s", environ[iterenv]);
 						printf("%d", lenght);*/
-						write(1, environ[iterenv], lenght);
+						/*write(1, environ[iterenv], lenght);
 						write(1, "\n", 1);
 					}
 					own_comm = 0;
 				}
-			}
+			}*/
+
+			own_comm = _env(p);
+
 
 			/*----------------------------------------------------------------*/
 
 			/*printf("%s ", p[0]);*/
 
 			/* 2-SYSTEM FUNCTIONS ---------------------*/
-			if(own_comm == 1)
+			if(own_comm == 0)
 			{
 				alone_comm = 1;
 				/*printf("ls esta aqui\n");*/

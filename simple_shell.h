@@ -7,6 +7,7 @@
 #include <string.h>
 #include<signal.h>
 
+extern char **environ;
 int _strcmp(char *s1, char *s2, int n);
 int _strlen(char *s);
 char *_strncpy(char *dest, char *src, int n);
@@ -16,6 +17,7 @@ char **_store_args(char *buffer, int *cont);
 int _exited(char *comm);
 char **assign_args(char **p, int cont);
 char *_found_path(char *buffer, char **p);
-
+int _env(char **p);
+void handle_sigint(int sig);
 
 #endif /* FUNCTIONS_SHELL_H */

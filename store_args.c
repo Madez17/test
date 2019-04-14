@@ -1,10 +1,12 @@
 #include "simple_shell.h"
 
 /**
+ * _store_args - Function
  *
- * _store_args - 
+ * @buffer: Buffer
+ * @cont: contador
  *
- *
+ * Return: pointer
  */
 
 char **_store_args(char *buffer, int *cont)
@@ -23,7 +25,7 @@ char **_store_args(char *buffer, int *cont)
 	}
 	*cont = *cont +  1;
 	p = malloc(sizeof(char *) * (*cont));
-	if(p == NULL)
+	if (p == NULL)
 	{
 		exit(-1);
 	}
